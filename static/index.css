@@ -1,0 +1,50 @@
+#blah {
+    width: 100%;
+    height: auto;
+}
+
+.btn {
+    width: 100%;
+}
+
+.upicons {
+    width: 100%;
+    text-align: center;
+    /* border: 1px solid red; */
+    margin-top: 5px;
+}
+
+.upicons {
+    cursor: pointer;
+}
+
+.upicons i {
+    font-size: 40px;
+    color: #3498db;
+}
+
+.upicons div {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.upicons i:hover {
+    color: #2980b9;
+}
+
+li {
+    list-style: none;
+}
+
+.contact i {
+    margin-left: 10px;
+    margin-top: 15px;
+    font-size: 30px;
+    color: #3498db;
+}
+
+.result img {
+    width: 100%;
+    height: auto;
+}

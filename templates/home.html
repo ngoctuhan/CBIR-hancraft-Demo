@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <title>Search Images</title>
+
+    <link rel="stylesheet" href="static/index.css">
+</head>
+
+<body>
+
+    <div class="container-fluid border" style="text-align: center; ">
+
+        <h2 class="mt-3 mb-3">Tìm kiếm ảnh phong cảnh bằng hình ảnh</h2>
+
+    </div>
+
+    <div class="container-fluid main mb-3 mt-3">
+
+        <div class="row">
+
+            <div class='upload col-4 border' style="margin-left:35%">
+
+                <div class="form-group boder">
+                    <label class="upicons" for="imgInp">
+                        <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                        <div>Tải lên hình ảnh của bạn</div>
+
+                    </label>
+                    <input id="imgInp" type="file" class="form-control-file border" name="file" style="display: none;">
+                </div>
+
+                <button type="submit" class="search btn btn-primary mb-3">Tìm kiếm</button>
+
+                <img id="blah" src="#" alt="">
+
+            </div>
+
+            <div class="result col-8" style="display: none;">
+
+                <div class="row">
+
+                    <div class="col-4 border" style="width:100%; min-height:200px;">
+                        <img id='1' src="#" alt="" srcset="">
+                    </div>
+                    <div class="col-4 border" style="width:100%; min-height:200px;">
+                        <img id='2' src="#" alt="" srcset="">
+                    </div>
+                    <div class="col-4 border" style="width:100%; min-height:200px;">
+                        <img id='3' src="#" alt="" srcset="">
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-4 border" style="width:100%; min-height:200px;">
+                        <img id='4' src="#" alt="" srcset="">
+                    </div>
+                    <div class="col-4 border" style="width:100%; min-height:200px;">
+                        <img id='5' src="#" alt="" srcset="">
+                    </div>
+                    <div class="col-4 border" style="width:100%; min-height:200px;">
+                        <img id='6' src="#" alt="" srcset="">
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-4 border" style="width:100%; min-height:200px;">
+                        <img id='7' src="#" alt="" srcset="">
+                    </div>
+                    <div class="col-4 border" style="width:100%; min-height:200px;">
+                        <img id='8' src="#" alt="" srcset="">
+                    </div>
+                    <div class="col-4 border" style="width:100%; min-height:200px;">
+                        <img id='9' src="#" alt="" srcset="">
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-4 border" style="width:100%; min-height:200px;">
+                        <img id='10' src="#" alt="" srcset="">
+                    </div>
+                    <div class="col-4 border" style="width:100%; min-height:200px;">
+                        <img id='11' src="#" alt="" srcset="">
+                    </div>
+                    <div class="col-4 border" style="width:100%; min-height:200px;">
+                        <img id='12' src="#" alt="" srcset="">
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-4 border" style="width:100%; min-height:200px;">
+                        <img id='13' src="#" alt="" srcset="">
+                    </div>
+                    <div class="col-4 border" style="width:100%; min-height:200px;">
+                        <img id='14' src="#" alt="" srcset="">
+                    </div>
+                    <div class="col-4 border" style="width:100%; min-height:200px;">
+                        <img id='15' src="#" alt="" srcset="">
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-4 border" style="width:100%; min-height:200px;">
+                        <img id='16' src="#" alt="" srcset="">
+                    </div>
+                    <div class="col-4 border" style="width:100%; min-height:200px;">
+                        <img id='17' src="#" alt="" srcset="">
+                    </div>
+                    <div class="col-4 border" style="width:100%; min-height:200px;">
+                        <img id='18' src="#" alt="" srcset="">
+                    </div>
+                </div>
+
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="container-fluid border" style="text-align: center;">
+
+        <h5 class="mt-2">Copyright: The Unlimited Team</h5>
+
+        <div class="contact">
+            <i class="fa fa-facebook-square" aria-hidden="true"></i>
+            <i class="fa fa-youtube-play" aria-hidden="true"></i>
+            <i class="fa fa-github" aria-hidden="true"></i>
+            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+        </div>
+
+        <div class="mt-2" style="color: red;">
+            Vesion: Anpha 1.0.0
+        </div>
+
+    </div>
+
+    <script>
+        $(document).ready(function() {
+
+            $('.search').click(function() {
+
+
+                $('.upload').css('margin-left', '0%');
+                $('.result').css('display', 'inline');
+
+                var data = $('#blah').attr('src');
+
+
+                $.ajax({
+
+                    type: 'POST',
+                    url: 'http://127.0.0.1:5000/search',
+                    dataType: 'json',
+                    data: {
+                        img64: data
+                    },
+                    success: function(result) {
+
+
+
+                        for (i = 1; i <= 18; i++) {
+
+                            let id_img = '#' + i;
+                            let key = '' + i;
+
+                            $(id_img).attr("src", result[key]);
+
+
+                        }
+
+                    }
+
+                });
+
+
+            });
+        });
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    $('#blah').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]); // convert to base64 string
+            }
+        }
+
+        $("#imgInp").change(function() {
+            readURL(this);
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,4 @@
+0:beach
+1:skyscraper
+2:temple
+3:terraces
