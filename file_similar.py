@@ -27,7 +27,7 @@ def normalize_ft_texture(list_ft):
     # chuẩn hóa miền giá trị của từng thuộc tính về trong khoảng (0,1)
     list_ft = np.array(list_ft)
     ft_nomalize =None
-    for i in range( list_ft.shape[1] ):
+    for i in range(list_ft.shape[1] ):
         scaler = MinMaxScaler()
         vector = np.expand_dims(list_ft[:, i], axis = -1)
         ft = scaler.fit_transform(vector)
@@ -50,7 +50,7 @@ def get_list_file_similarity(img_path=None, img=None, clf = None):
     ft_hist = clf.get_ft_RGB(img_path)
 
     ft_texture = clf.get_ft_texture(img_path)
-
+    
     cluster = clf.predict(ft_hist, ft_texture)
 
     print("[INFOR]: Cluster ", cluster)
@@ -65,7 +65,7 @@ def get_list_file_similarity(img_path=None, img=None, clf = None):
     df = pd.read_csv(file[1])
     list_ft_1 = df.iloc[:, 1:-2].values
     list_file = df.iloc[:, -2].values
-    colors = get_top_file(ft_hist, list_ft_1, list_file, top=15)
+    colors = get_top_file(ft_hist, list_ft_1, list_file, top=20)
     # print(colors)
 
     # get file using texture
@@ -84,43 +84,119 @@ def get_list_file_similarity(img_path=None, img=None, clf = None):
     # textures = get_top_file(ft, list_ft, list_file, top=25)
     # print(textures)
 
-    result = get_top_file(ft_all, list_ft_all, list_file, top=15)
+    result = get_top_file(ft_all, list_ft_all, list_file, top=10)
     # print(result)
 
-    tmp = result or colors
+    tmp = [file for file in result if file not in colors]
     
+    # print(colors)
+    # print(tmp)
+
     return cluster, colors, tmp
 
 def get_result(path):
+
     labels, result, tmp = get_list_file_similarity(path)
 
     # list_img = [path.split('/')[-1]]
     list_img = result
     list_img += tmp
 
-    return labels, list_img
+    return labels, list_img[:18]
+
+def get_result_as_row(file_name):
+
+    file_name = 'upload/'+ file_name
+    FILE_RESULT = 'utils/result/result.csv'
+
+    FILE_WEIGHT = 'utils/result/weight.csv'
+
+    # df =  pd.read_csv(FILE_RESULT)
+    # df.to_csv(FILE_RESULT, index=False)
+
+    # df =  pd.read_csv(FILE_WEIGHT)
+    # df.to_csv(FILE_WEIGHT, index=False)
+
+
+    df_result = pd.read_csv(FILE_RESULT).values
+    df_weight = pd.read_csv(FILE_WEIGHT).values
+
+    
+    list_img =  df_result[:,1].tolist()
+    
+    # print(list_img)
+    idx = list_img.index(file_name) 
+    
+    list_img = df_result[idx,2:]
+    
+    list_weight = df_weight[idx, 1:]
+   
+    index_sort = np.argsort(list_weight)
+    return [list_img[i] for i in np.flip(index_sort)], np.flip(index_sort)
 
 if __name__ == '__main__':
 
-    path = 'F:\Current Project\Landscape Search\dataset/temple/temple_97.jpg'
-    labels, result, tmp = get_list_file_similarity(path)
+    # path = 'F:/Current Project/Landscape Search/dataset/temple/temple_97.jpg'
+    # labels, result, tmp = get_list_file_similarity(path)
+
+    # # list_img = [path.split('/')[-1]]
+    # list_img = result
+    # list_img += tmp
+    # imgs = []
+    # img = cv2.imread(path)
+    # imgs.append(img)
+    # for file in list_img:
+    #     path = os.path.join('dataset', labels, file)
+    #     img = cv2.imread(path)
+    #     img = cv2.resize(img,(128,128))
+    #     imgs.append(img)
+
+    # frame = build_montages(imgs, (96, 96), (6, 6))[0]
+
+    # cv2.imshow("result", frame)
+    # cv2.waitKey(0)
+
+    # FILE_RESULT = 'utils/result/result.csv'
+
+    # FILE_WEIGHT = 'utils/result/weight.csv'
+
+    # # make dataset initial
+
+    # labels, result, tmp = get_list_file_similarity(path)
 
     # list_img = [path.split('/')[-1]]
-    list_img = result
-    list_img += tmp
-    imgs = []
-    img = cv2.imread(path)
-    imgs.append(img)
-    for file in list_img:
-        path = os.path.join('dataset', labels, file)
-        img = cv2.imread(path)
-        img = cv2.resize(img,(128,128))
-        imgs.append(img)
+    # list_img += result
+    # list_img += tmp
 
-    frame = build_montages(imgs, (96, 96), (6, 6))[0]
+    # list_img = list_img[:19]
 
-    cv2.imshow("result", frame)
-    cv2.waitKey(0)
+    # list_weight = [(len(list_img) - i - 1) for i in range(len(list_img)-1)]
+
+    # data = {str(key): list_img[key] for key in range(len(list_img))}
+
+    # df = pd.DataFrame(data, columns = [str(key) for key in range(len(list_img))] , index = [0])
+
+    # data2 = {str(key): list_weight[key] for key in range(len(list_weight))}
+
+    # df2 = pd.DataFrame(data2, columns = [str(key) for key in range(len(list_weight))], index = [0])
+
+    # df.to_csv(FILE_RESULT)
+    # df2.to_csv(FILE_WEIGHT)
+
+    
+    # file_name = '2020-06-28-16-08-45.jpg'
+
+
+    # print(get_result_as_row(file_name))
+
+    x =  np.array([1,5,6])
+
+    print(np.flip(x))
+
+    
+
+
+
         
 
     

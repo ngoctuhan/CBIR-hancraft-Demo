@@ -1,37 +1,21 @@
 from time import gmtime, strftime
 import numpy as np
+import pandas as pd
 import base64
+import os
+
 def random_name():
     time = strftime("%Y-%m-%d-%H-%M-%S", gmtime())
     time = str(time) + '.jpg'
     return time
 
-def get_ids_top(arr_scores, top = 3):
+def is_before(vector, list_vectors):
 
-    ids_sort = np.argsort(arr_scores)
-
-    return [ids_sort[-1], ids_sort[-2], ids_sort[-3]]
-
-class Params:
-
-    model_dir = 'model'
-    imgWidth  = 256
-    imgHeight = 256
-    CLASSES = { 0: 'Pepper__bell___Bacterial_spot', 
-                1: 'Pepper__bell___healthy', 
-                2: 'Potato___Early_blight', 
-                3: 'Potato___Late_blight', 
-                4: 'Potato___healthy', 
-                5: 'Tomato_Bacterial_spot', 
-                6: 'Tomato_Early_blight', 
-                7: 'Tomato_Late_blight', 
-                8: 'Tomato_Leaf_Mold', 
-                9: 'Tomato_Septoria_leaf_spot', 
-                10: 'Tomato_Spider_mites_Two_spotted_spider_mite', 
-                11: 'Tomato__Target_Spot', 
-                12: 'Tomato__Tomato_YellowLeaf__Curl_Virus', 
-                13: 'Tomato__Tomato_mosaic_virus', 
-                14: 'Tomato_healthy'}
+    distance = [np.sum(vector-vector_i) for vector_i in list_vectors]
+    # print(distance)
+    if 0 in distance:
+        return True #
+    return False
     
 
 def covert_img2base64(img_path):
@@ -41,10 +25,73 @@ def covert_img2base64(img_path):
 
     return 'data:image/jpg;base64,' + str(encoded_string).split("'")[1]
 
+def get_list_img_str_uploaded():
+
+    path = 'F:/Current Project/Landscape Search/upload'
+    img_str = []
+    list_file = os.listdir(path)
+    for file in list_file:
+        path_file = os.path.join(path, file)
+        img_str.append(covert_img2base64(path_file))
+
+  
+    return img_str, list_file
+
+def find_have_in_database():
+    
+    list_imgstrs, list_file = get_list_img_str_uploaded()
+    imgstr = covert_img2base64('temp.jpg')
+    
+    for i in range(len(list_imgstrs)):
+       
+        if imgstr == list_imgstrs[i]:
+            
+            return list_file[i]
+       
+    return None
 
 
+def update_scores(source, target):
+
+    FILE_RESULT = 'utils/result/result.csv'
+
+    FILE_WEIGHT = 'utils/result/weight.csv'
+
+    df_result = pd.read_csv(FILE_RESULT)
+    
+    df_result.to_csv(FILE_RESULT, index=False)
+    list_img =  df_result.values[:,1].tolist()
+   
+    idx = list_img.index(source) 
+
+    # print(idx)
+    
+    df = pd.read_csv(FILE_WEIGHT)
+
+    max = np.max(df.iloc[idx,1:].values) + 1
+    
+    # print(max)
+    
+    print(df.iloc[idx, int(target) + 1 ])
+    df.iloc[idx, int(target) + 1] = df.iloc[idx, int(target) + 1] +  0.15 * (max - df.iloc[idx, int(target) + 1])
+
+    print(df.iloc[idx, int(target) + 1])
+    
+    df.to_csv(FILE_WEIGHT, index=False)
+    
 if __name__ == '__main__':
 
-    path = 'F:\Current Project\Landscape Search\dataset/temple/temple_97.jpg'
+    path = 'F:/Current Project/Landscape Search/upload/2020-06-27-18-09-21.jpg'
 
-    print(covert_img2base64(path))
+    path2 = 'F:/Current Project/Landscape Search/upload/2020-06-27-18-09-21.jpg'
+
+    # x = np.array([1,2])
+
+    # y = np.array([[1,2], [3,4]])
+    # print(is_before(x, y))
+
+    str1 = covert_img2base64(path)
+    print(str1)
+    str2 = covert_img2base64(path2)
+
+    print(str1 == str2)

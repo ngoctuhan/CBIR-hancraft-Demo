@@ -132,8 +132,6 @@ def statistical_glmc(glmc_maxtrix):
     entropy_value = np.sum( [(-1 * i* math.log(i,2)) for i in glmc_flatten if i !=0])
     feature.append(entropy_value)
 
-
-    
     # đồng nhất lớn nhất khi chỉ có 1 màu
     uniformity_value = np.sum( [i**2 for i in glmc_flatten ])
     feature.append(uniformity_value)
