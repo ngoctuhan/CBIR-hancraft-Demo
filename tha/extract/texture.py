@@ -94,6 +94,8 @@ def fast_glmc(image=None, distances= [40], angles=[0, np.pi/4, np.pi/2, 3*np.pi/
     glcm_45  = result[:, :, 0, 1]
     glcm_90  = result[:, :, 0, 2]
     glcm_135 = result[:, :, 0, 3]
+
+    # print(glcm_0)
     
 
     # print( statistical_glmc(glcm_0/ np.sum(glcm_0) ))
@@ -127,50 +129,84 @@ def statistical_glmc(glmc_maxtrix):
         return contrast_value
     feature.append(contrast(glmc_maxtrix))
 
+    # dissimilarity
+    def disimilarity(glmc_mt):
+        h,w = glmc_mt.shape[0],glmc_mt.shape[1]
+        disimilarity_value = 0
+        for i in range(h):
+            for j in range(w):
+                disimilarity_value += glmc_mt[i,j]* abs(i - j) 
+
+        return disimilarity_value
+
+    feature.append(contrast(glmc_maxtrix))
     # entropy
+
     glmc_flatten =  glmc_maxtrix.flatten()
     entropy_value = np.sum( [(-1 * i* math.log(i,2)) for i in glmc_flatten if i !=0])
     feature.append(entropy_value)
 
     # đồng nhất lớn nhất khi chỉ có 1 màu
+    
     uniformity_value = np.sum( [i**2 for i in glmc_flatten ])
     feature.append(uniformity_value)
 
-    # mean đo xs trung bình
-    mean_value = np.sum([i for i in glmc_flatten]) / (glmc_maxtrix.shape[0] * glmc_maxtrix.shape[1])
-    feature.append(mean_value)
+    # mean đo xs trung bình  
+    horizontal_sum = np.sum(glmc_maxtrix, axis = 1) # tổng các cột
 
-    # độ lệch chuẩn 
-    n = glmc_maxtrix.shape[0]
-    std_value = np.sqrt((1 / n**2)* np.sum( [(i - mean_value)**2 for i in glmc_flatten ])   )
-    feature.append(std_value)
+    mean_horizontal = np.sum([i * horizontal_sum[i] for i in range(horizontal_sum.shape[0])])
+    feature.append(mean_horizontal)
 
-    # correclation
-    mean_i = np.mean(glmc_maxtrix, axis=1)
-    std_i = np.std(glmc_maxtrix, axis = 1)
-    # print(std_i)
+    vertical_sum =   np.sum(glmc_maxtrix, axis = 0)
+    mean_vertical = np.mean([i * vertical_sum[i] for i in range(vertical_sum.shape[0])])
+    feature.append(mean_vertical)
+    # độ lệch chuẩn :
+    
+    h, w = glmc_maxtrix.shape[0],glmc_maxtrix.shape[1]
+    std_horizontal = 0
+    for i in range(h):
+        for j in range(w):
+            std_horizontal += glmc_maxtrix[i, j] * (i - mean_horizontal)**2 
+    feature.append(std_horizontal)
+
+    std_vertical = 0
+    for j in range(w):
+        for i in range(h):
+            std_vertical += glmc_maxtrix[i, j] * (j - mean_vertical)**2 
+
+    feature.append(std_vertical)
+
+    # correclation horizontal
 
     corr = []
-
-    for k  in range(1, len(mean_i)):
-        # for i in rang(glmc_maxtrix.shape[1]):
-        cov_o_k =  np.sum([((glmc_maxtrix[0, i] - mean_i[0])*(glmc_maxtrix[k, i] - mean_i[k])) for i in range(glmc_maxtrix.shape[1])])
-        cov_o_k = cov_o_k / len(mean_i)
-        # TH độ lệch chuẩn bằng 0 thì như thế nào
-        if (std_i[0] *  std_i[k]) != 0: 
-            corr_o_k = cov_o_k / (std_i[0] *  std_i[k])
-            corr.append(corr_o_k)
+    mean_i = np.mean(glmc_maxtrix, axis = 1)
+    std_i = np.std(glmc_maxtrix, axis = 1)
+    h, w = glmc_maxtrix.shape[0],glmc_maxtrix.shape[1]
+    for i in range(1, h):
+        cov_0_i = np.mean((glmc_maxtrix[0,:] - mean_i[0]) *  (glmc_maxtrix[i, :] - mean_i[i])) 
+        if std_i[0] * std_i[i] == 0:
+            corr_0_i = 1
         else:
-            if cov_o_k > 0:
-                corr_o_k = 1 
-                corr.append(corr_o_k)
-            elif cov_o_k == 0:
-                corr_o_k = 0 
-                corr.append(corr_o_k)
-            else:
-                corr_o_k = -1
-                corr.append(corr_o_k)
+            corr_0_i = cov_0_i/ (std_i[0] * std_i[i])
+        
+        corr.append(corr_0_i)
+    
+    
+
+    mean_y = np.mean(glmc_maxtrix, axis = 0)
+    std_y = np.std(glmc_maxtrix, axis = 0)
+    for i in range(1, w):
+        cov_0_i = np.mean((glmc_maxtrix[:, 0] - mean_y[0]) * (glmc_maxtrix[:, 0] - mean_y))
+        if std_y[0] * std_y[i] == 0:
+            corr_0_i = 1
+        else:
+            corr_0_i = cov_0_i/ (std_y[0] * std_y[i])
+        
+        corr.append(corr_0_i)
+
     feature += corr
+    # correclation vertical
+
     # print('Corr_cal:', np.sum(corr))
     glcm_0 = np.expand_dims(glmc_maxtrix, axis=-1)
     glcm_0 = np.expand_dims(glcm_0 , axis=-1)
@@ -224,9 +260,12 @@ def glmc(image = None, n_bins = 16,distance = 40, n_neighbors = 8):
 
 if __name__ == "__main__":
 
-    img = np.array([[0, 0, 0, 1, 2], [1, 1, 0, 1, 1]])
-    
-    print(glmc_cal(img, 3, 1))
+    path = 'F:\Current Project\Landscape Search/temp.jpg'
+
+    # img = cv2.imread(path,0)
+
+    feature = fast_glmc(img)
+    print(len(feature))
 
 
 

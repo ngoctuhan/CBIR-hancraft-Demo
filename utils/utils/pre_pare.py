@@ -30,14 +30,14 @@ if __name__ == "__main__":
         filenames = []
         labels = []
         for filename in os.listdir(folder_path):
-            img = cv2.imread(os.path.join(folder_path, filename))
+            img = cv2.imread(os.path.join(folder_path, filename), 0)
             if img is None:
                 print(folder, " ",filename)
-            # img = cv2.resize(img, (480,640))
+            img = cv2.resize(img, (480,640))
             # features.append(histogram_RGB(img, 8, 'global', 4))
-            # features.append(fast_glmc(img, distances =[30], levels=16))
+            features.append(fast_glmc(img, distances =[35], levels=16))
 
-            features.append(historgram_RGB_seperate(img, 8))
+            # features.append(historgram_RGB_seperate(img, 8))
             filenames.append(filename)
             labels.append(folder)
         
@@ -50,6 +50,6 @@ if __name__ == "__main__":
         
         df['file'] = filenames
         df['label'] = labels
-        df.to_csv(str(folder) + '_histogram_rr' + '.csv')
-        # df.to_csv(str(folder)  + '.csv')
+        # df.to_csv(str(folder) + '_histogram_rr' + '.csv')
+        df.to_csv(str(folder)  + '.csv')
 

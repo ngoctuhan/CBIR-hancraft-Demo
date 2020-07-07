@@ -119,21 +119,21 @@ if __name__ == "__main__":
     filename = ['beach_histogram.csv', 'skyscraper_histogram.csv', 'temple_histogram.csv','terraces_histogram.csv']
     filename2 = ['beach_histogram_rr.csv', 'skyscraper_histogram_rr.csv', 'temple_histogram_rr.csv','terraces_histogram_rr.csv']
 
-    X_train1, y_train1, X_test1, y_test1 = load_feature(filename)
-    X_train2, y_train2, X_test2, y_test2 = load_feature(filename1)
+    # X_train1, y_train1, X_test1, y_test1 = load_feature(filename)
+    # X_train2, y_train2, X_test2, y_test2 = load_feature(filename1)
 
-    print(X_train1.shape)
-    print(X_train2.shape)
-    X_train = np.concatenate((X_train1, X_train2), axis = 1)
-    X_test = np.concatenate((X_test1, X_test2), axis = 1)
-    y_train = y_train1
-    y_test = y_test1
+    # print(X_train1.shape)
+    # print(X_train2.shape)
+    # X_train = np.concatenate((X_train1, X_train2), axis = 1)
+    # X_test = np.concatenate((X_test1, X_test2), axis = 1)
+    # y_train = y_train1
+    # y_test = y_test1
 
-    # X_train, y_train, X_test, y_test = load_feature(filename2)
-    # print("[INFOR] : Training shape", X_train.shape)
-    # print("[INFOR] : Testing shape", X_test.shape)
-    # print("[INFOR] : Label train shape", y_train.shape)
-    # print("[INFOR] : Label test shape", y_test.shape)
+    X_train, y_train, X_test, y_test = load_feature(filename1)
+    print("[INFOR] : Training shape", X_train.shape)
+    print("[INFOR] : Testing shape", X_test.shape)
+    print("[INFOR] : Label train shape", y_train.shape)
+    print("[INFOR] : Label test shape", y_test.shape)
 
     # encode labels
     le = LabelEncoder()
@@ -147,7 +147,7 @@ if __name__ == "__main__":
 
     # print(X_train[0])
     max = 0
-    for i in range(250):
+    for i in range(159):
         clf = DecisionTreeClassifier(max_features=i+1,random_state=0)
         clf.fit(X_train, y_train)
 
@@ -156,8 +156,7 @@ if __name__ == "__main__":
         print( acc )
         if acc > max:
             max = acc
-        if acc > 90.:
-            joblib.dump(clf, 'model.pkl')
+            # joblib.dump(clf, 'model.pkl')
     
     print('[MAX]:', max)
 
